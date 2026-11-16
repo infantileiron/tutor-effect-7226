@@ -21,6 +21,10 @@ class PlanInput(BaseModel):
     description:str=Field(default='',max_length=2000)
 class RunInput(BaseModel):
     plan_id:int=Field(gt=0)
+class TrialInput(BaseModel):
+    title:str=Field(min_length=2,max_length=120)
+    quota:int=Field(ge=1)
+    codes:list[str]=Field(min_length=2,max_length=20000)
 class ConclusionInput(BaseModel):
     conclusion:str=Field(min_length=4,max_length=3000)
     published:bool=False

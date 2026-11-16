@@ -2,9 +2,11 @@ import random,json
 from datetime import datetime,timezone
 from sqlalchemy import select,func
 from src.config.database import Base,engine,SessionLocal
-from src.models.entities import User,Student,Plan,Report
+from src.models.entities import User,Student,Plan,Report,TrialBatch
 from src.utils.security import hash_password
 from src.services.statistics import welch
+from src.services import trials
+from src.schemas.business import TrialInput
 
 def seed():
     Base.metadata.create_all(engine)
@@ -28,5 +30,11 @@ def seed():
         if not db.scalar(select(Report).where(Report.plan_id==plan.id)):
             result=welch(db.scalars(select(Student).order_by(Student.code)).all(),plan)
             db.add(Report(plan_id=plan.id,status='completed',result=result,created_at=datetime.now(timezone.utc).isoformat(),conclusion='干预组均分较高。建议保留教学点分层观察，并在下一轮随机分组验证。',published=True));db.commit()
-        print(json.dumps({table:db.scalar(select(func.count()).select_from(model)) for table,model in [('users',User),('students',Student),('plans',Plan),('reports',Report)]}))
+        trial_title='2026秋季 · 随机试验批次A'
+        if not db.scalar(select(TrialBatch).where(TrialBatch.title==trial_title)):
+            codes=[s.code for s in db.scalars(select(Student)).all()]
+            admin=db.scalar(select(User).where(User.email=='admin@demo.local'))
+            batch=trials.create_batch(db,TrialInput(title=trial_title,quota=80,codes=codes),admin)
+            trials.reveal_batch(db,batch.id)
+        print(json.dumps({table:db.scalar(select(func.count()).select_from(model)) for table,model in [('users',User),('students',Student),('plans',Plan),('reports',Report),('trial_batches',TrialBatch)]}))
 if __name__=='__main__': seed()

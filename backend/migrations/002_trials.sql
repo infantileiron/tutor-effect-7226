@@ -1,0 +1,2 @@
+-- Randomized trial batches: sealed roster + random basis, commit-reveal draw, ITT analysis.
+CREATE TABLE IF NOT EXISTS trial_batches (id SERIAL PRIMARY KEY,title VARCHAR(120) UNIQUE NOT NULL,status VARCHAR(20) NOT NULL,quota INTEGER NOT NULL,algorithm VARCHAR(80) NOT NULL,seed VARCHAR(64) NOT NULL,roster JSON NOT NULL,assignments JSON NOT NULL,commitment VARCHAR(64) NOT NULL,created_by VARCHAR(120) NOT NULL,created_at VARCHAR(40) NOT NULL,revealed_at VARCHAR(40));

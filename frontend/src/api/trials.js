@@ -1,0 +1,1 @@
+import{request,post}from'./client.js';export const getTrials=()=>request('/trials');export const getTrial=id=>request('/trials/'+id);export const createTrial=data=>post('/trials',data);export const revealTrial=id=>post(`/trials/${id}/reveal`,{});

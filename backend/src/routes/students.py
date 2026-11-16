@@ -11,3 +11,5 @@ def listing(db=Depends(get_db),user=Depends(current_user)): return serialize_man
 def create(data:StudentInput,db=Depends(get_db),user=Depends(editor)): return serialize(students.save_student(db,data))
 @router.put('/students/{id}')
 def update(id:int,data:StudentInput,db=Depends(get_db),user=Depends(editor)): return serialize(students.save_student(db,data,id))
+@router.delete('/students/{id}',status_code=204)
+def remove(id:int,db=Depends(get_db),user=Depends(editor)): students.delete_student(db,id)

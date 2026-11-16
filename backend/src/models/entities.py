@@ -33,6 +33,20 @@ class Report(Base):
     conclusion:Mapped[str]=mapped_column(Text,default='')
     published:Mapped[bool]=mapped_column(Boolean,default=False)
     created_at:Mapped[str]=mapped_column(String(40))
+class TrialBatch(Base):
+    __tablename__='trial_batches'
+    id:Mapped[int]=mapped_column(primary_key=True)
+    title:Mapped[str]=mapped_column(String(120),unique=True)
+    status:Mapped[str]=mapped_column(String(20),default='pending')
+    quota:Mapped[int]=mapped_column(Integer)
+    algorithm:Mapped[str]=mapped_column(String(80))
+    seed:Mapped[str]=mapped_column(String(64))
+    roster:Mapped[list]=mapped_column(JSON)
+    assignments:Mapped[dict]=mapped_column(JSON)
+    commitment:Mapped[str]=mapped_column(String(64))
+    created_by:Mapped[str]=mapped_column(String(120))
+    created_at:Mapped[str]=mapped_column(String(40))
+    revealed_at:Mapped[str|None]=mapped_column(String(40),nullable=True)
 class Audit(Base):
     __tablename__='audit_logs'
     id:Mapped[int]=mapped_column(primary_key=True)

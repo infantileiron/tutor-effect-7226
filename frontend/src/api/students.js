@@ -1,1 +1,1 @@
-import{request,post}from'./client.js';export const getStudents=()=>request('/students');export const saveStudent=(data,id)=>id?request('/students/'+id,{method:'PUT',body:JSON.stringify(data)}):post('/students',data);
+import{request,post}from'./client.js';export const getStudents=()=>request('/students');export const saveStudent=(data,id)=>id?request('/students/'+id,{method:'PUT',body:JSON.stringify(data)}):post('/students',data);export const deleteStudent=id=>request('/students/'+id,{method:'DELETE'});

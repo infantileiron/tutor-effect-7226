@@ -8,3 +8,7 @@ def save_student(db,data,id=None):
     for k,v in data.model_dump().items(): setattr(item,k,v)
     db.add(item);db.commit();db.refresh(item)
     return item
+def delete_student(db,id):
+    item=db.get(Student,id)
+    if not item: raise HTTPException(404,'学员不存在')
+    db.delete(item);db.commit()
